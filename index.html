@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatos & Páginas - Librería Online</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <header class="header-principal">
+    <div class="header-top">
+        <!--Logo de la tienda-->
+        <div class="brand">
+            <span class="logo-icon"></span>
+            <span class="brand-name">RELATOS & PÁGINAS</span>
+        </div>
+
+        <!-- Barra de Búsqueda -->
+        <div class="search-bar">
+            <input type="text" placeholder="Busca por Título, Autor, ISBN...">
+            <button type="button">🔍</button>
+        </div>
+
+        <!--Enlaces de autenticación y Carrito-->
+        <div class="header-actions">
+            <div class="auth-links">
+                <a href="login.html">Iniciar sesión</a>
+                <span>|</span>
+                <a href="registro.html">Registrarse</a>
+            </div>
+            <a href="#" class="action-item icon-only" title="Favoritos">🤍</a>
+            <a href="carrito.html" class="action-item cart-icon">🛒 <span id="cart-count">0</span></a>
+        </div>
+    </div>
+
+    <!-- MENÚ DE NAVEGACIÓN Y CATEGORÍAS -->
+    <nav class="nav-categories">
+        <ul>
+            <li><a href="productos.html">LIBROS</a></li>
+            <li><a href="#">EBOOKS</a></li>
+            <li><a href="#">PREVENTAS</a></li>
+            <li><a href="#">LIBROS IMPORTADOS</a></li>
+            <li><a href="#">INFANTIL Y JUVENIL</a></li>
+            <li><a href="blogs.html" class="highlight-pink">AUTORES CHILENOS HASTA 45% OFF</a></li>
+            <li><a href="contacto.html" class="highlight-pink">PROMOCIONES</a></li>
+        </ul>
+    </nav>
+</header>
+
+    <main>
+        <section class="hero-banner">
+            <div class="hero-content">
+                <h2>LIBRERÍA ONLINE</h2>
+                <p>Descubre historias inolvidables, desde clásicos de la literatura hasta los lanzamientos más esperados. ¡Envíos a todo Chile!</p>
+                <a href="#catalogo" class="btn-hero">Ver Catálogo</a>
+            </div>
+            <div class="hero-media">
+                <iframe 
+                    src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                    title="Video Promocional Librería" 
+                    frameborder="0" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </section>
+
+        <!--Catalogo-->
+        <section id="catalogo" class="productos-section">
+    <h2 class="section-title">LOS MÁS VENDEDORES</h2>
+    
+    <div class="productos-grid">
+        <!-- 1. Harry Potter -->
+        <article class="product-card">
+            <span class="badge red">15% OFF</span>
+            <img src="img/hp1.jpg" alt="Harry Potter y la Piedra Filosofal">
+            <h3>Harry Potter y la Piedra Filosofal</h3>
+            <p class="attributes">J.K. Rowling • Fantasía</p>
+            <p class="price">$16.990 <span class="old-price">$19.990</span></p>
+            <button class="btn-add-cart">🛒 AGREGAR</button>
+        </article>
+
+        <!-- 2. Harry Potter -->
+        <article class="product-card">
+            <img src="img/hp2.jpg" alt="Harry Potter y la Cámara Secreta">
+            <h3>Harry Potter y la Cámara Secreta</h3>
+            <p class="attributes">J.K. Rowling • Fantasía</p>
+            <p class="price">$17.500</p>
+            <button class="btn-add-cart">🛒 AGREGAR</button>
+        </article>
+
+        <!-- 3. Harry Potter -->
+        <article class="product-card">
+            <span class="badge green">NUEVO</span>
+            <img src="img/hp3.jpg" alt="Harry Potter y el Prisionero de Azkaban">
+            <h3>Harry Potter y el Prisionero de Azkaban</h3>
+            <p class="attributes">J.K. Rowling • Fantasía</p>
+            <p class="price">$18.990</p>
+            <button class="btn-add-cart">🛒 AGREGAR</button>
+        </article>
+
+        <!-- 4. Bridgerton -->
+        <article class="product-card">
+            <span class="badge red">20% OFF</span>
+            <img src="img/bridgerton1.jpg" alt="El Duque y Yo - Bridgerton 1">
+            <h3>El Duque y Yo (Bridgerton 1)</h3>
+            <p class="attributes">Julia Quinn • Romance Histórico</p>
+            <p class="price">$14.390 <span class="old-price">$17.990</span></p>
+            <button class="btn-add-cart">🛒 AGREGAR</button>
+        </article>
+
+        <!-- 5. Bridgerton -->
+        <article class="product-card">
+            <img src="img/bridgerton2.jpg" alt="El Vizconde que me Amó - Bridgerton 2">
+            <h3>El Vizconde que me Amó (Bridgerton 2)</h3>
+            <p class="attributes">Julia Quinn • Romance Histórico</p>
+            <p class="price">$15.990</p>
+            <button class="btn-add-cart">🛒 AGREGAR</button>
+        </article>
+
+        <!-- 6. Bridgerton -->
+        <article class="product-card">
+            <img src="img/bridgerton3.jpg" alt="Te Doy mi Corazón - Bridgerton 3">
+            <h3>Te Doy mi Corazón (Bridgerton 3)</h3>
+            <p class="attributes">Julia Quinn • Romance Histórico</p>
+            <p class="price">$15.990</p>
+            <button class="btn-add-cart">🛒 AGREGAR</button>
+        </article>
+
+        <!-- 7. Stephen King -->
+        <article class="product-card">
+            <span class="badge red">30% OFF</span>
+            <img src="img/king1.jpg" alt="El Resplandor">
+            <h3>El Resplandor</h3>
+            <p class="attributes">Stephen King • Terror / Suspenso</p>
+            <p class="price">$13.290 <span class="old-price">$18.990</span></p>
+            <button class="btn-add-cart">🛒 AGREGAR</button>
+        </article>
+
+        <!-- 8. Stephen King -->
+        <article class="product-card">
+            <span class="badge green">NUEVO</span>
+            <img src="img/king2.jpg" alt="It (Eso)">
+            <h3>It (Eso)</h3>
+            <p class="attributes">Stephen King • Terror</p>
+            <p class="price">$22.990</p>
+            <button class="btn-add-cart">🛒 AGREGAR</button>
+        </article>
+        <!-- 9. Stephen King -->
+        <article class="product-card">
+            <span class="badge red">10% OFF</span>
+            <img src="img/king3.jpg" alt="Carrie">
+            <h3>Carrie</h3>
+            <p class="attributes">Stephen King • Terror</p>
+            <p class="price">$11.690 <span class="old-price">$12.990</span></p>
+            <button class="btn-add-cart">🛒 AGREGAR</button>
+        </article>
+
+        <!-- 10. Bridgerton -->
+        <article class="product-card">
+            <span class="badge green">NUEVO</span>
+            <img src="img/bridgerton4.jpg" alt="Seduciendo a Mr. Bridgerton">
+            <h3>Seduciendo a Mr. Bridgerton</h3>
+            <p class="attributes">Julia Quinn • Romance Histórico</p>
+            <p class="price">$16.500</p>
+            <button class="btn-add-cart">🛒 AGREGAR</button>
+        </article>
+    </div>
+    </section>
+    </main>
+
+    <footer class="footer-principal">
+        <div class="footer-left">
+            <h4>Relatos & Páginas</h4>
+            <ul class="categories-list">
+                <li><a href="#">Ficción</a></li>
+                <li><a href="#">No Ficción</a></li>
+                <li><a href="#">Infantil y Juvenil</a></li>
+            </ul>
+            <div class="payment-methods">
+                <span>VISA</span>
+                <span>MasterCard</span>
+                <span>AMEX</span>
+            </div>
+        </div>
+
+        <div class="footer-right">
+            <p><strong>Stay In Touch! Join our Newsletter:</strong></p>
+            <form class="newsletter-form" id="newsletterForm">
+                <input type="email" placeholder="Enter Email" required>
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </footer>
+
+    <!--JS -->
+    <script src="js/main.js"></script>
+</body>
+</html>
