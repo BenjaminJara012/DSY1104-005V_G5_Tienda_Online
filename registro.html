@@ -1,57 +1,98 @@
 <!DOCTYPE html>
-<html lang ="es">
-    <head>
-        <meta charset="UTF-8">
-        <title>Registro - Relatos & Páginas</title>
-        <link rel="stylesheet" href="">
-    </head>
-
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Relatos & Páginas</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
 <body>
+
+    <!-- ENCABEZADO SUPERIOR -->
     <header class="header-principal">
         <div class="header-top">
             <div class="brand">
-                <span class="logo-icon"></span>
-                <span class="brand-name"></span>
+                <span class="logo-icon">📚</span>
+                <span class="brand-name">RELATOS & PÁGINAS</span>
             </div>
             <div class="header-actions">
                 <div class="auth-links">
-                    <a href="index.html">Volver al Inicio</a>
+                    <a href="index.html">Inicio</a>
+                    <span>|</span>
+                    <a href="login.html">Iniciar sesión</a>
                 </div>
             </div>
         </div>
+        <nav class="nav-categories">
+            <ul>
+                <li><a href="index.html">VOLVER AL CATÁLOGO</a></li>
+                <li><a href="contacto.html">CONTACTO / AYUDA</a></li>
+            </ul>
+        </nav>
     </header>
-    <main class="form-container">
-        <h2>Crear Cuenta</h2>
-        <p>Regístrate para realizar compras y recibir ofertas exclusivas.</p>
 
-        <form id="registerForm" novalidate>
-            <div class="form-group">
-                <label for="regNombre">Nombre Completo:</label>
-                <input type="text" id="regNombre" placeholder="Ej: Juan Pérez">
-                <span class="error-message" id="errorRegNombre"></span>
+    <!-- FORMULARIO DE REGISTRO CON TEMÁTICA -->
+    <main class="form-page">
+        <div class="form-card">
+            <div class="form-header">
+                <h2>Crear Cuenta</h2>
+                <p>Únete a nuestra comunidad de lectores y disfruta de beneficios exclusivos.</p>
             </div>
 
-            <div class="form-group">
-                <label for="regEmail">Correo Electrónico:</label>
-                <input type="email" id="regEmail" placeholder="correo@ejemplo.com">
-                <span class="error-message" id="errorRegEmail"></span>
-            </div>
+            <form id="registerForm" novalidate>
+                <div class="form-group">
+                    <label for="regNombre">Nombre Completo</label>
+                    <input type="text" id="regNombre" placeholder="Ej: Juan Pérez" required>
+                    <span class="error-message" id="errorRegNombre"></span>
+                </div>
 
-            <div class="form-group">
-                <label for="regPassword">Contraseña:</label>
-                <input type="password" id="regPassword" placeholder="Mínimo 6 caracteres">
-                <span class="error-message" id="errorRegPassword"></span>
-            </div>
+                <div class="form-group">
+                    <label for="regEmail">Correo Electrónico</label>
+                    <input type="email" id="regEmail" placeholder="ejemplo@correo.com" required>
+                    <span class="error-message" id="errorRegEmail"></span>
+                </div>
 
-            <div class="form-group">
-                <label for="regConfirm">Confirmar Contraseña:</label>
-                <input type="password" id="regConfirm" placeholder="Repite tu contraseña">
-                <span class="error-message" id="errorRegConfirm"></span>
-            </div>
+                <div class="form-group">
+                    <label for="regPassword">Contraseña</label>
+                    <input type="password" id="regPassword" placeholder="Mínimo 6 caracteres" required>
+                    <span class="error-message" id="errorRegPassword"></span>
+                </div>
 
-            <button type="submit" class="btn-submit">Registrarse</button>
-        </form>
+                <div class="form-group">
+                    <label for="regConfirm">Confirmar Contraseña</label>
+                    <input type="password" id="regConfirm" placeholder="Repite tu contraseña" required>
+                    <span class="error-message" id="errorRegConfirm"></span>
+                </div>
+
+                <button type="submit" class="btn-submit">Registrarse</button>
+
+                <div class="form-footer-text">
+                    ¿Ya tienes una cuenta? <a href="login.html">Inicia sesión aquí</a>
+                </div>
+            </form>
+        </div>
     </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="footer-principal">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h4>SERVICIO AL CLIENTE</h4>
+                <ul>
+                    <li><a href="contacto.html">Centro de Ayuda</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>RELATOS & PÁGINAS</h4>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Relatos & Páginas. Todos los derechos reservados.</p>
+        </div>
+    </footer>
 
     <script src="js/main.js"></script>
 </body>

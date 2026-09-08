@@ -390,3 +390,109 @@
     font-size: 0.75rem;
     color: #888888;
 }
+
+/* --- ESTILOS DE PÁGINA DE FORMULARIOS (Registro) --- */
+.form-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    background-color: #f9f9f9;
+}
+
+.form-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 480px;
+    padding: 35px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e0e0e0;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.form-header h2 {
+    color: #004d40;
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+.form-header p {
+    color: #666666;
+    font-size: 0.88rem;
+    line-height: 1.4;
+}
+
+.form-group {
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 0.88rem;
+    font-weight: bold;
+    color: #004d40;
+    margin-bottom: 6px;
+}
+
+.form-group input {
+    padding: 11px 14px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input:focus {
+    border-color: #004d40;
+    box-shadow: 0 0 5px rgba(0, 77, 64, 0.2);
+    outline: none;
+}
+
+.btn-submit {
+    background-color: #004d40;
+    color: #ffffff;
+    border: none;
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-submit:hover {
+    background-color: #00695c;
+}
+
+.form-footer-text {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.85rem;
+    color: #555555;
+}
+
+.form-footer-text a {
+    color: #004d40;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.form-footer-text a:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    color: #d9534f;
+    font-size: 0.8rem;
+    margin-top: 4px;
+    display: block;
+}
