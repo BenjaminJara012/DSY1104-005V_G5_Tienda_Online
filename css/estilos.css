@@ -4,7 +4,6 @@
     padding: 15px 40px 0 40px;
     font-family: Arial, sans-serif;
 }
-
 /* Fila superior: Logo | Buscador | Acciones */
 .header-top {
     display: flex;

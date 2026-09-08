@@ -24,13 +24,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 esValido = false;
             }
 
-            // 2. Validar Correo Electrónico mediante Expresión Regular (Regex)
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            // Expresión Regular para validar solo dominios permitidos: @duoc.cl, @profesor.duoc.cl o @gmail.com
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@(duoc\.cl|profesor\.duoc\.cl|gmail\.com)$/;
             if (!emailRegex.test(email)) {
-                mostrarError('errorEmail', 'Ingresa un correo electrónico válido (ejemplo@dominio.com).');
+                mostrarError('errorEmail', 'El correo debe ser @duoc.cl, @profesor.duoc.cl o @gmail.com');    
                 esValido = false;
             }
-
             // 3. Validar Selección de Asunto
             if (asunto === '') {
                 mostrarError('errorAsunto', 'Debes seleccionar un asunto.');
@@ -93,9 +92,9 @@ if (registerForm) {
             esValido = false;
         }
 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@(duoc\.cl|profesor\.duoc\.cl|gmail\.com)$/;
         if (!emailRegex.test(email)) {
-            mostrarError('errorRegEmail', 'Correo no válido.');
+            mostrarError('errorEmail', 'El correo debe ser @duoc.cl, @profesor.duoc.cl o @gmail.com');    
             esValido = false;
         }
 
@@ -134,9 +133,9 @@ if (loginForm) {
         let esValido = true;
 
         // Validar formato de Correo Electrónico (Regex para verificar el @ y el dominio)
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@(duoc\.cl|profesor\.duoc\.cl|gmail\.com)$/;
         if (!emailRegex.test(email)) {
-            mostrarError('errorLoginEmail', 'Ingresa un correo válido (debe incluir "@" y un dominio).');
+            mostrarError('errorEmail', 'El correo debe ser @duoc.cl, @profesor.duoc.cl o @gmail.com');    
             esValido = false;
         }
 
