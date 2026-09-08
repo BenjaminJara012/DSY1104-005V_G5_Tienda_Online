@@ -71,3 +71,47 @@ function limpiarErrores() {
         span.textContent = '';
     });
 }
+
+
+// Validación del Formulario de Registro
+const registerForm = document.getElementById('registerForm');
+
+if (registerForm) {
+    registerForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        limpiarErrores();
+
+        const nombre = document.getElementById('regNombre').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const pass = document.getElementById('regPassword').value;
+        const confirmPass = document.getElementById('regConfirm').value;
+
+        let esValido = true;
+
+        if (nombre.length < 3) {
+            mostrarError('errorRegNombre', 'Ingresa tu nombre completo.');
+            esValido = false;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            mostrarError('errorRegEmail', 'Correo no válido.');
+            esValido = false;
+        }
+
+        if (pass.length < 6) {
+            mostrarError('errorRegPassword', 'La contraseña debe tener al menos 6 caracteres.');
+            esValido = false;
+        }
+
+        if (pass !== confirmPass) {
+            mostrarError('errorRegConfirm', 'Las contraseñas no coinciden.');
+            esValido = false;
+        }
+
+        if (esValido) {
+            alert('¡Cuenta creada con éxito! Ahora puedes iniciar sesión.');
+            registerForm.reset();
+        }
+    });
+}

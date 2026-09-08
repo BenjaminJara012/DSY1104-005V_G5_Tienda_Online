@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang ="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Registro - Relatos & Páginas</title>
+        <link rel="stylesheet" href="">
+    </head>
+
+<body>
+    <header class="header-principal">
+        <div class="header-top">
+            <div class="brand">
+                <span class="logo-icon"></span>
+                <span class="brand-name"></span>
+            </div>
+            <div class="header-actions">
+                <div class="auth-links">
+                    <a href="index.html">Volver al Inicio</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="form-container">
+        <h2>Crear Cuenta</h2>
+        <p>Regístrate para realizar compras y recibir ofertas exclusivas.</p>
+
+        <form id="registerForm" novalidate>
+            <div class="form-group">
+                <label for="regNombre">Nombre Completo:</label>
+                <input type="text" id="regNombre" placeholder="Ej: Juan Pérez">
+                <span class="error-message" id="errorRegNombre"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="regEmail">Correo Electrónico:</label>
+                <input type="email" id="regEmail" placeholder="correo@ejemplo.com">
+                <span class="error-message" id="errorRegEmail"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="regPassword">Contraseña:</label>
+                <input type="password" id="regPassword" placeholder="Mínimo 6 caracteres">
+                <span class="error-message" id="errorRegPassword"></span>
+            </div>
+
+            <div class="form-group">
+                <label for="regConfirm">Confirmar Contraseña:</label>
+                <input type="password" id="regConfirm" placeholder="Repite tu contraseña">
+                <span class="error-message" id="errorRegConfirm"></span>
+            </div>
+
+            <button type="submit" class="btn-submit">Registrarse</button>
+        </form>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
