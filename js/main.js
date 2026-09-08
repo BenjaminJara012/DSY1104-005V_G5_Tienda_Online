@@ -115,3 +115,46 @@ if (registerForm) {
         }
     });
 }
+
+// --- LÓGICA DEL CARRITO DE COMPRAS ---
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Cargar productos guardados en LocalStorage (si existen)
+    let carrito = JSON.parse(localStorage.getItem('carritoLibreria')) || [];
+    actualizarContadorCarrito();
+
+    // 2. Escuchar clics en los botones "AGREGAR"
+    const botonesAgregar = document.querySelectorAll('.btn-add-cart');
+
+    botonesAgregar.forEach((boton) => {
+        boton.addEventListener('click', (e) => {
+            // Obtener datos del libro desde la tarjeta (article)
+            const tarjeta = e.target.closest('.product-card');
+            const titulo = tarjeta.querySelector('h3').textContent;
+            const precio = tarjeta.querySelector('.price').childNodes[0].textContent.trim();
+            const imagen = tarjeta.querySelector('img').src;
+
+            // Crear objeto del libro
+            const libro = { titulo, precio, imagen };
+
+            // Agregar al arreglo del carrito
+            carrito.push(libro);
+
+            // Guardar en el navegador (LocalStorage) para que no se borre al cambiar de página
+            localStorage.setItem('carritoLibreria', JSON.stringify(carrito));
+
+            // Actualizar contador visual
+            actualizarContadorCarrito();
+
+            // Mensaje de confirmación
+            alert(`¡"${titulo}" se agregó al carrito!`);
+        });
+    });
+
+    // Función para actualizar el número sobre el icono del carrito
+    function actualizarContadorCarrito() {
+        const contadores = document.querySelectorAll('#cart-count');
+        contadores.forEach(span => {
+            span.textContent = carrito.length;
+        });
+    }
+});
