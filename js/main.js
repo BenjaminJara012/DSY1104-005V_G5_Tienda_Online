@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
             event.preventDefault();
 
             // Limpiar errores previos
-            limpiarErrores();
+            limpiarErrores();   
 
             // Obtener los valores de los campos
             const nombre = document.getElementById('nombre').value.trim();
@@ -115,6 +115,47 @@ if (registerForm) {
         }
     });
 }
+
+// --- VALIDACIÓN DEL FORMULARIO DE LOGIN ---
+const loginForm = document.getElementById('loginForm');
+
+if (loginForm) {
+    loginForm.addEventListener('submit', function (event) {
+        // 1. Detener el envío automático del formulario
+        event.preventDefault();
+
+        // 2. Limpiar errores de intentos anteriores
+        limpiarErrores();
+
+        // 3. Obtener los valores ingresados
+        const email = document.getElementById('loginEmail').value.trim();
+        const pass = document.getElementById('loginPassword').value;
+
+        let esValido = true;
+
+        // Validar formato de Correo Electrónico (Regex para verificar el @ y el dominio)
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            mostrarError('errorLoginEmail', 'Ingresa un correo válido (debe incluir "@" y un dominio).');
+            esValido = false;
+        }
+
+        // Validar Contraseña (mínimo 6 caracteres)
+        if (pass.length < 6) {
+            mostrarError('errorLoginPassword', 'La contraseña debe tener al menos 6 caracteres.');
+            esValido = false;
+        }
+
+        // Si todas las reglas se cumplen correctamente
+        if (esValido) {
+            alert('¡Inicio de sesión exitoso! Bienvenido/a a Relatos & Páginas.');
+            loginForm.reset();
+            // Redirigir al inicio tras iniciar sesión
+            window.location.href = 'index.html';
+        }
+    });
+}
+
 
 // --- LÓGICA DEL CARRITO DE COMPRAS ---
 document.addEventListener('DOMContentLoaded', () => {
