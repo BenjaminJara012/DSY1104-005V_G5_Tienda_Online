@@ -257,3 +257,136 @@
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.15);
 }
+/* --- ESTILOS DEL FORMULARIO DE CONTACTO --- */
+.form-container {
+    max-width: 600px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border: 1px solid #e0e0e0;
+}
+
+.form-container h2 {
+    color: #004d40;
+    margin-bottom: 10px;
+}
+
+.form-container p {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+}
+
+.form-group {
+    margin-bottom: 18px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.95rem;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #004d40;
+    outline: none;
+}
+
+.btn-submit {
+    background-color: #004d40;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+}
+
+.btn-submit:hover {
+    background-color: #00695c;
+}
+
+.footer-principal {
+    background-color: #f5f5f5; /* Fondo claro como la imagen de referencia */
+    border-top: 1px solid #e0e0e0;
+    padding: 30px 40px 15px 40px;
+    margin-top: 50px;
+    font-family: Arial, sans-serif;
+}
+
+/* Contenedor flexible para poner las columnas lado a lado */
+.footer-container {
+    display: flex;
+    justify-content: space-between; /* Distribuye las 4 columnas a lo ancho */
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 20px;
+}
+
+/* Estilo individual de cada columna */
+.footer-column {
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer-column h4 {
+    color: #004d40; /* Mismo todo de marca */
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+/* Limpieza de listas desordenadas */
+.footer-column ul {
+    list-style: none; /* Elimina los puntos/viñetas negros */
+    padding: 0;
+    margin: 0;
+}
+
+.footer-column li {
+    margin-bottom: 8px;
+}
+
+.footer-column a, 
+.footer-column span {
+    text-decoration: none;
+    color: #555555;
+    font-size: 0.85rem;
+    transition: color 0.2s ease;
+}
+
+.footer-column a:hover {
+    color: #004d40;
+    text-decoration: underline;
+}
+
+/* Copyright inferior */
+.footer-bottom {
+    text-align: center;
+    border-top: 1px solid #e5e5e5;
+    margin-top: 30px;
+    padding-top: 15px;
+    font-size: 0.75rem;
+    color: #888888;
+}
