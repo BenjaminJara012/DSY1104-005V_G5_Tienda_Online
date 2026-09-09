@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalle del Libro</title>
+    <title>Detalle del Libro - Relatos & Páginas</title>
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
@@ -12,42 +12,12 @@
         <a href="index.html">← Volver al Catálogo</a>
     </header>
 
-    <main class="form-page" style="padding: 40px 20px;">
-        <div id="contenedorDetalle" class="form-card" style="max-width: 800px; display: flex; gap: 30px; align-items: center;">
-            <!-- Aquí se inyectará el libro -->
+    <main class="detalle-page">
+        <div id="contenedorDetalle" class="detalle-card">
+            <!-- Se inyecta dinámicamente desde js/detalle.js -->
         </div>
     </main>
 
-    <!-- 1. Cargar el JS principal donde reside 'productosBD' -->
     <script src="js/main.js"></script>
-
-    <!-- 2. Cargar el detalle buscando el ID de la URL -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const params = new URLSearchParams(window.location.search);
-            const idObtenido = parseInt(params.get('id'));
-
-            // Buscar el libro correspondiente en el arreglo
-            const libroEncontrado = productosBD.find(p => p.id === idObtenido);
-
-            const contenedor = document.getElementById('contenedorDetalle');
-
-            if (libroEncontrado) {
-                contenedor.innerHTML = `
-                    <div style="flex: 1;">
-                        <img src="${libroEncontrado.imagen}" alt="${libroEncontrado.titulo}" style="width: 100%; border-radius: 8px;">
-                    </div>
-                    <div style="flex: 1.5;">
-                        <h2>${libroEncontrado.titulo}</h2>
-                        <p style="font-size: 1.4rem; color: #004d40; font-weight: bold; margin: 15px 0;">$${libroEncontrado.precio.toLocaleString('es-CL')}</p>
-                        <p style="color: #555; line-height: 1.6; margin-bottom: 20px;">${libroEncontrado.descripcion}</p>
-                        <button class="btn-submit" onclick="agregarAlCarritoDirecto(${libroEncontrado.id})">Añadir al Carrito</button>
-                    </div>
-                `;
-            } else {
-                contenedor.innerHTML = `<p>El producto solicitado no existe. <a href="index.html">Volver al catálogo</a></p>`;
-            }
-        });
-    </script>
 </body>
 </html>

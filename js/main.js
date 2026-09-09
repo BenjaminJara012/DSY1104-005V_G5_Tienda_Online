@@ -396,3 +396,34 @@ document.addEventListener('DOMContentLoaded', () => {
     // Actualiza la burbuja/contador del carrito en la barra superior
     actualizarContadorCarrito();
 });
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Captura el parámetro "?id=X" enviado en la URL
+    const params = new URLSearchParams(window.location.search);
+    const idObtenido = parseInt(params.get('id'));
+
+    // Busca el producto en el arreglo base proveniente de main.js
+    const libroEncontrado = productosBD.find(p => p.id === idObtenido);
+    const contenedor = document.getElementById('contenedorDetalle');
+
+    if (libroEncontrado) {
+        const precioFormateado = typeof libroEncontrado.precio === 'number' 
+            ? libroEncontrado.precio.toLocaleString('es-CL') 
+            : libroEncontrado.precio;
+
+        contenedor.innerHTML = `
+            <div class="detalle-img-box">
+                <img src="${libroEncontrado.imagen}" alt="${libroEncontrado.titulo}">
+            </div>
+            <div class="detalle-info-box">
+                <h2>${libroEncontrado.titulo}</h2>
+                <p class="detalle-precio">$${precioFormateado}</p>
+                <p class="detalle-descripcion">${libroEncontrado.descripcion}</p>
+                <button class="btn-submit" onclick="agregarAlCarritoDirecto(${libroEncontrado.id})">Añadir al Carrito</button>
+            </div>
+        `;
+    } else {
+        contenedor.innerHTML = `<p>El producto solicitado no existe. <a href="index.html">Volver al catálogo</a></p>`;
+    }
+});
