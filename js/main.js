@@ -157,23 +157,116 @@ if (loginForm) {
 
 
 // --- LÓGICA DEL CARRITO DE COMPRAS ---
-// Función para añadir productos al LocalStorage
-function agregarAlCarritoDirecto(idProducto) {
-    // 1. Buscar el libro en el arreglo por su ID
-    const libro = productosBD.find(p => p.id === idProducto);
-    if (!libro) return;
+document.addEventListener('DOMContentLoaded', () => {
+    renderizarCarrito();
 
-    // 2. Obtener el carrito actual del LocalStorage o crear uno vacío
+    // Evento para vaciar el carrito
+    const btnVaciar = document.getElementById('btnVaciar');
+    if (btnVaciar) {
+        btnVaciar.addEventListener('click', () => {
+            localStorage.removeItem('carritoLibreria');
+            renderizarCarrito();
+            if (typeof actualizarContadorCarrito === 'function') {
+                actualizarContadorCarrito();
+            }
+        });
+    }
+});
+
+// Renderiza la lista completa de productos e interactúa con la vista
+function renderizarCarrito() {
+    const lista = document.getElementById('listaCarrito');
+    const totalElem = document.getElementById('montoTotal');
+    if (!lista || !totalElem) return;
+
     let carrito = JSON.parse(localStorage.getItem('carritoLibreria')) || [];
 
-    // 3. Revisar si el producto ya existe en el carrito
-    const existeIndex = carrito.findIndex(p => p.id === idProducto);
+    if (carrito.length === 0) {
+        lista.innerHTML = '<p style="padding: 20px 0;">Tu carrito está vacío actualmente.</p>';
+        totalElem.textContent = '$0';
+        return;
+    }
+
+    let total = 0;
+
+    lista.innerHTML = carrito.map(item => {
+        const cantidad = item.cantidad || 1;
+        
+        // Formatear precio en caso de que venga como número o como texto tipo "$8.000"
+        const precioNumerico = typeof item.precio === 'number' 
+            ? item.precio 
+            : parseInt(String(item.precio).replace(/\D/g, '')) || 0;
+
+        const subtotal = precioNumerico * cantidad;
+        total += subtotal;
+
+        return `
+            <div class="carrito-item-card">
+                <img src="${item.imagen}" alt="${item.titulo}">
+                <div class="carrito-item-info">
+                    <strong>${item.titulo}</strong>
+                    <p style="color: #666; font-size: 0.85rem;">Precio unitario: $${precioNumerico.toLocaleString('es-CL')}</p>
+                </div>
+                <div class="cantidad-controls">
+                    <button class="btn-qty" onclick="modificarCantidad(${item.id}, -1)">-</button>
+                    <span>${cantidad}</span>
+                    <button class="btn-qty" onclick="modificarCantidad(${item.id}, 1)">+</button>
+                </div>
+                <div class="carrito-item-precio">$${subtotal.toLocaleString('es-CL')}</div>
+            </div>
+        `;
+    }).join('');
+
+    totalElem.textContent = `$${total.toLocaleString('es-CL')}`;
+}
+
+// Incrementa o decrementa la cantidad del ítem seleccionado
+function modificarCantidad(idProducto, cambio) {
+    let carrito = JSON.parse(localStorage.getItem('carritoLibreria')) || [];
+    
+    // Cambiamos '===' por '==' para no fallar si id es String
+    const index = carrito.findIndex(p => p.id == idProducto);
+
+    if (index !== -1) {
+        carrito[index].cantidad = (carrito[index].cantidad || 1) + cambio;
+
+        if (carrito[index].cantidad <= 0) {
+            carrito.splice(index, 1);
+        }
+
+        localStorage.setItem('carritoLibreria', JSON.stringify(carrito));
+        renderizarCarrito();
+        
+        if (typeof actualizarContadorCarrito === 'function') {
+            actualizarContadorCarrito();
+        }
+    }
+}
+
+// --- FUNCIÓN PARA AGREGAR PRODUCTOS DESDE EL CATÁLOGO O DETALLE ---
+function agregarAlCarritoDirecto(idProducto) {
+    // 1. Asegurar la existencia del catálogo base (productosBD)
+    if (typeof productosBD === 'undefined') {
+        console.error("Error: La variable productosBD no está definida.");
+        return;
+    }
+
+    // 2. Buscar el producto (usando == para evitar problemas de tipo String vs Number)
+    const libro = productosBD.find(p => p.id == idProducto);
+    if (!libro) {
+        alert("Producto no encontrado.");
+        return;
+    }
+
+    // 3. Obtener el carrito actual del LocalStorage
+    let carrito = JSON.parse(localStorage.getItem('carritoLibreria')) || [];
+
+    // 4. Verificar si ya está en el carrito
+    const existeIndex = carrito.findIndex(p => p.id == idProducto);
 
     if (existeIndex !== -1) {
-        // Si ya existe, aumentar la cantidad
         carrito[existeIndex].cantidad = (carrito[existeIndex].cantidad || 1) + 1;
     } else {
-        // Si no existe, agregar con cantidad 1
         carrito.push({
             id: libro.id,
             titulo: libro.titulo,
@@ -183,11 +276,33 @@ function agregarAlCarritoDirecto(idProducto) {
         });
     }
 
-    // 4. Guardar en LocalStorage y actualizar la interfaz
+    // 5. Guardar en LocalStorage y refrescar vista/contador
     localStorage.setItem('carritoLibreria', JSON.stringify(carrito));
-    actualizarContadorCarrito();
-    
+
+    if (typeof actualizarContadorCarrito === 'function') {
+        actualizarContadorCarrito();
+    }
+
+    if (typeof renderizarCarrito === 'function' && document.getElementById('listaCarrito')) {
+        renderizarCarrito();
+    }
+
     alert(`¡"${libro.titulo}" se agregó al carrito!`);
+}
+
+// Simulación de cupón para cumplir con el formulario lateral del Mockup
+function aplicarCupon() {
+    const input = document.getElementById('inputCupon');
+    if (!input) return;
+
+    const codigo = input.value.trim().toUpperCase();
+    if (codigo === 'DUOC10') {
+        alert('¡Cupón del 10% aplicado con éxito!');
+    } else if (codigo === '') {
+        alert('Por favor ingrese un código de cupón.');
+    } else {
+        alert('El cupón ingresado no es válido.');
+    }
 }
 
 // Función para actualizar el número del icono del carrito en el Header

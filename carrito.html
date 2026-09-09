@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Carrito - Relatos & Páginas</title>
     <link rel="stylesheet" href="css/estilos.css">
 </head>
@@ -19,35 +20,34 @@
         </div>
     </header>
 
-    <main class="form-container" style="max-width: 800px;">
-        <h2>Tu Carrito de Compras</h2>
-        <div id="listaCarrito">
-            <!-- Los libros agregados mediante JS aparecerán aquí -->
-        </div>
-        <button id="btnVaciar" class="btn-submit" style="background-color: #d9534f; margin-top: 20px;">Vaciar Carrito</button>
+    <main class="carrito-layout">
+        <!-- Columna Izquierda: Lista de Productos -->
+        <section class="carrito-main">
+            <h2>Mi carrito de compras</h2>
+            <div id="listaCarrito">
+                <!-- Se llena dinámicamente desde js/carrito.js -->
+            </div>
+            <button id="btnVaciar" class="btn-vaciar">Vaciar Carrito</button>
+        </section>
+
+        <!-- Columna Derecha: Resumen de Compra -->
+        <aside class="carrito-resumen">
+            <div class="resumen-header">
+                <span>TOTAL:</span>
+                <strong id="montoTotal">$0</strong>
+            </div>
+
+            <div class="cupon-group">
+                <input type="text" id="inputCupon" placeholder="Ingrese el cupón de descuento">
+                <button type="button" id="btnCupon" onclick="aplicarCupon()">APLICAR</button>
+            </div>
+
+            <button class="btn-pagar" onclick="alert('¡Compra realizada con éxito!')">PAGAR</button>
+        </aside>
     </main>
 
-    <script>
-        // Cargar y mostrar items del carrito
-        const lista = document.getElementById('listaCarrito');
-        let productos = JSON.parse(localStorage.getItem('carritoLibreria')) || [];
-
-        if (productos.length === 0) {
-            lista.innerHTML = '<p>Tu carrito está vacío actualmente.</p>';
-        } else {
-            lista.innerHTML = productos.map(item => `
-                <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ccc; padding: 10px 0;">
-                    <img src="${item.imagen}" width="50">
-                    <strong>${item.titulo}</strong>
-                    <span>${item.precio}</span>
-                </div>
-            `).join('');
-        }
-
-        document.getElementById('btnVaciar').addEventListener('click', () => {
-            localStorage.removeItem('carritoLibreria');
-            location.reload();
-        });
-    </script>
+    <!-- Vinculación a los archivos JS externos -->
+    <script src="js/main.js"></script>
+    <script src="js/carrito.js"></script>
 </body>
 </html>
