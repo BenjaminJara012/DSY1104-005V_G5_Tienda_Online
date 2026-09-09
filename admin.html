@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Relatos & Páginas</title>
+    <link rel="stylesheet" href="css/estilos.css">
+    <style>
+        /* Layout básico del Panel Admin */
+        .admin-layout { display: flex; min-height: 100vh; }
+        .admin-sidebar { width: 250px; background: #004d40; color: white; padding: 20px; }
+        .admin-sidebar h2 { font-size: 1.2rem; margin-bottom: 20px; border-bottom: 1px solid #00695c; padding-bottom: 10px; }
+        .admin-menu { list-style: none; padding: 0; }
+        .admin-menu li { margin-bottom: 10px; }
+        .admin-menu a { color: white; text-decoration: none; display: block; padding: 10px; border-radius: 4px; }
+        .admin-menu a:hover, .admin-menu a.active { background: #00695c; }
+        .admin-content { flex: 1; padding: 30px; background: #f4f6f7; }
+        .admin-section { display: none; }
+        .admin-section.active { display: block; }
+        
+        /* Estilos de tablas */
+        .admin-table { width: 100%; border-collapse: collapse; background: white; margin-top: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .admin-table th, .admin-table td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        .admin-table th { background: #e0f2f1; color: #004d40; }
+        .btn-action { padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; }
+        .btn-edit { background: #ffb300; color: white; }
+        .btn-delete { background: #e53935; color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-layout">
+        <!-- Menú Lateral Sidebar -->
+        <aside class="admin-sidebar">
+            <h2>⚙️ Mantenimiento</h2>
+            <ul class="admin-menu">
+                <li><a href="#" class="nav-link active" onclick="mostrarSeccion('sec-productos')">📦 Productos</a></li>
+                <li><a href="#" class="nav-link" onclick="mostrarSeccion('sec-usuarios')">👥 Usuarios</a></li>
+                <li><a href="index.html">🚪 Volver a la Tienda</a></li>
+            </ul>
+        </aside>
+
+        <!-- Contenido Principal -->
+        <main class="admin-content">
+
+            <!-- 1. MANTENEDOR DE PRODUCTOS -->
+            <section id="sec-productos" class="admin-section active">
+                <h2>Gestión de Productos</h2>
+                
+                <!-- Formulario Agregar Producto -->
+                <div class="form-card" style="max-width: 100%; margin-bottom: 30px;">
+                    <h3>Agregar / Editar Producto</h3>
+                    <form id="formProducto" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label>Título del Libro:</label>
+                            <input type="text" id="prodTitulo" class="form-control" required>
+                        </div>
+                        <div>
+                            <label>Precio ($):</label>
+                            <input type="number" id="prodPrecio" class="form-control" required>
+                        </div>
+                        <div>
+                            <label>Ruta Imagen (Ej: img/hp1.jpg):</label>
+                            <input type="text" id="prodImagen" class="form-control" required>
+                        </div>
+                        <div style="grid-column: span 2;">
+                            <label>Descripción:</label>
+                            <textarea id="prodDescripcion" class="form-control" rows="2" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit" style="grid-column: span 2;">Guardar Producto</button>
+                    </form>
+                </div>
+
+                <!-- Tabla de Productos -->
+                <h3>Lista de Productos</h3>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Título</th>
+                            <th>Precio</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaProductosBody">
+                        <!-- Carga dinámica JS -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- 2. MANTENEDOR DE USUARIOS -->
+            <section id="sec-usuarios" class="admin-section">
+                <h2>Gestión de Usuarios</h2>
+                
+                <!-- Formulario Usuario -->
+                <div class="form-card" style="max-width: 100%; margin-bottom: 30px;">
+                    <h3>Registrar Usuario (Admin)</h3>
+                    <form id="formUsuarioAdmin" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div>
+                            <label>RUN (Sin puntos ni guión, ej: 19123456K):</label>
+                            <input type="text" id="userRun" class="form-control" placeholder="12345678K" required>
+                            <span id="errorRun" class="error-text" style="color:red; font-size: 0.8rem;"></span>
+                        </div>
+                        <div>
+                            <label>Nombre Completo:</label>
+                            <input type="text" id="userNombre" class="form-control" required>
+                        </div>
+                        <div>
+                            <label>Correo Electrónico:</label>
+                            <input type="email" id="userEmail" class="form-control" placeholder="@duoc.cl / @gmail.com" required>
+                        </div>
+                        <div>
+                            <label>Región:</label>
+                            <select id="selectRegion" class="form-control" onchange="cargarComunas()" required>
+                                <option value="">Seleccione Región</option>
+                                <option value="rm">Región Metropolitana</option>
+                                <option value="valpo">Valparaíso</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Comuna:</label>
+                            <select id="selectComuna" class="form-control" required>
+                                <option value="">Seleccione Comuna</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-submit" style="grid-column: span 2;">Guardar Usuario</button>
+                    </form>
+                </div>
+
+                <!-- Tabla Usuarios -->
+                <h3>Usuarios Registrados</h3>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>RUN</th>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaUsuariosBody">
+                        <!-- Carga dinámica JS -->
+                    </tbody>
+                </table>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
