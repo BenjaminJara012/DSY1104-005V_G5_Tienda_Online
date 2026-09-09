@@ -5,27 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel de Administración - Relatos & Páginas</title>
     <link rel="stylesheet" href="css/estilos.css">
-    <style>
-        /* Layout básico del Panel Admin */
-        .admin-layout { display: flex; min-height: 100vh; }
-        .admin-sidebar { width: 250px; background: #004d40; color: white; padding: 20px; }
-        .admin-sidebar h2 { font-size: 1.2rem; margin-bottom: 20px; border-bottom: 1px solid #00695c; padding-bottom: 10px; }
-        .admin-menu { list-style: none; padding: 0; }
-        .admin-menu li { margin-bottom: 10px; }
-        .admin-menu a { color: white; text-decoration: none; display: block; padding: 10px; border-radius: 4px; }
-        .admin-menu a:hover, .admin-menu a.active { background: #00695c; }
-        .admin-content { flex: 1; padding: 30px; background: #f4f6f7; }
-        .admin-section { display: none; }
-        .admin-section.active { display: block; }
-        
-        /* Estilos de tablas */
-        .admin-table { width: 100%; border-collapse: collapse; background: white; margin-top: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .admin-table th, .admin-table td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-        .admin-table th { background: #e0f2f1; color: #004d40; }
-        .btn-action { padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; }
-        .btn-edit { background: #ffb300; color: white; }
-        .btn-delete { background: #e53935; color: white; }
-    </style>
 </head>
 <body>
 
@@ -48,9 +27,9 @@
                 <h2>Gestión de Productos</h2>
                 
                 <!-- Formulario Agregar Producto -->
-                <div class="form-card" style="max-width: 100%; margin-bottom: 30px;">
+                <div class="form-card-admin">
                     <h3>Agregar / Editar Producto</h3>
-                    <form id="formProducto" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <form id="formProducto" class="grid-form">
                         <div>
                             <label>Título del Libro:</label>
                             <input type="text" id="prodTitulo" class="form-control" required>
@@ -63,11 +42,11 @@
                             <label>Ruta Imagen (Ej: img/hp1.jpg):</label>
                             <input type="text" id="prodImagen" class="form-control" required>
                         </div>
-                        <div style="grid-column: span 2;">
+                        <div class="full-width">
                             <label>Descripción:</label>
                             <textarea id="prodDescripcion" class="form-control" rows="2" required></textarea>
                         </div>
-                        <button type="submit" class="btn-submit" style="grid-column: span 2;">Guardar Producto</button>
+                        <button type="submit" class="btn-submit full-width">Guardar Producto</button>
                     </form>
                 </div>
 
@@ -93,13 +72,13 @@
                 <h2>Gestión de Usuarios</h2>
                 
                 <!-- Formulario Usuario -->
-                <div class="form-card" style="max-width: 100%; margin-bottom: 30px;">
+                <div class="form-card-admin">
                     <h3>Registrar Usuario (Admin)</h3>
-                    <form id="formUsuarioAdmin" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <form id="formUsuarioAdmin" class="grid-form">
                         <div>
                             <label>RUN (Sin puntos ni guión, ej: 19123456K):</label>
                             <input type="text" id="userRun" class="form-control" placeholder="12345678K" required>
-                            <span id="errorRun" class="error-text" style="color:red; font-size: 0.8rem;"></span>
+                            <span id="errorRun" class="error-text"></span>
                         </div>
                         <div>
                             <label>Nombre Completo:</label>
@@ -123,7 +102,7 @@
                                 <option value="">Seleccione Comuna</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn-submit" style="grid-column: span 2;">Guardar Usuario</button>
+                        <button type="submit" class="btn-submit full-width">Guardar Usuario</button>
                     </form>
                 </div>
 

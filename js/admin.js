@@ -111,3 +111,23 @@ function renderizarTablaUsuariosAdmin() {
         </tr>
     `).join('');
 }
+
+let usuariosBD = [
+    { run: "19123456K", nombre: "Juan Pérez", email: "juan@duoc.cl" },
+    { run: "187654321", nombre: "Maria Silva", email: "maria@gmail.com" }
+];
+
+document.getElementById('formUsuarioAdmin').addEventListener('submit', (e) => {
+    e.preventDefault();
+    // (Validaciones de RUN y Email aquí)
+    
+    // Agregar el nuevo usuario al arreglo local
+    usuariosBD.push({
+        run: document.getElementById('userRun').value,
+        nombre: document.getElementById('userNombre').value,
+        email: document.getElementById('userEmail').value
+    });
+    
+    renderizarTablaUsuariosAdmin(); // Volver a dibujar la tabla
+    alert("Usuario agregado temporalmente a la lista.");
+});
