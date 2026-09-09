@@ -495,3 +495,21 @@
     margin-top: 4px;
     display: block;
 }
+
+/* Quita el sub-rayado y mantiene los colores del diseño */
+.product-link, 
+.product-title-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+/* Efecto visual suave al pasar el cursor sobre el título o la foto */
+.product-card img:hover {
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+.product-title-link:hover {
+    color: #004d40; /* O el color principal de tu paleta */
+}
