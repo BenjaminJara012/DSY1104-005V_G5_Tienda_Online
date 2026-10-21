@@ -6,6 +6,15 @@ import {
   useState
 } from "react";
 
+import {
+  agregarProducto,
+  eliminarProducto,
+  modificarCantidad,
+  vaciarProductos,
+  calcularCantidadTotal,
+  calcularTotalCarrito
+} from "../services/carritoService";
+
 const CarritoContext = createContext(null);
 
 export function CarritoProvider({ children }) {
@@ -20,7 +29,7 @@ export function CarritoProvider({ children }) {
     }
   });
 
-  // Guardar los cambios del carrito
+  // Persistir el carrito
   useEffect(() => {
     localStorage.setItem(
       "carritoLibreria",
@@ -28,69 +37,35 @@ export function CarritoProvider({ children }) {
     );
   }, [carrito]);
 
-  // Agregar un producto
+  // Agregar producto
   const agregarAlCarrito = (producto) => {
-    setCarrito((anterior) => {
-      const existe = anterior.find(
-        (item) => item.id === producto.id
-      );
-
-      if (existe) {
-        return anterior.map((item) =>
-          item.id === producto.id
-            ? { ...item, cantidad: item.cantidad + 1 }
-            : item
-        );
-      }
-
-      return [
-        ...anterior,
-        { ...producto, cantidad: 1 }
-      ];
-    });
+    setCarrito((anterior) =>
+      agregarProducto(anterior, producto)
+    );
   };
 
-  // Eliminar un producto
+  // Eliminar producto
   const eliminarDelCarrito = (id) => {
     setCarrito((anterior) =>
-      anterior.filter((item) => item.id !== id)
+      eliminarProducto(anterior, id)
     );
   };
 
-  // Cambiar la cantidad
+  // Cambiar cantidad
   const cambiarCantidad = (id, cantidad) => {
-    const nuevaCantidad = Number(cantidad);
-
-    if (!Number.isInteger(nuevaCantidad) || nuevaCantidad < 1) {
-      return;
-    }
-
     setCarrito((anterior) =>
-      anterior.map((item) =>
-        item.id === id
-          ? { ...item, cantidad: nuevaCantidad }
-          : item
-      )
+      modificarCantidad(anterior, id, cantidad)
     );
   };
 
-  // Vaciar el carrito
+  // Vaciar carrito
   const vaciarCarrito = () => {
-    setCarrito([]);
+    setCarrito(vaciarProductos());
   };
 
-  // Calcular cantidad total de unidades
-  const cantidadTotal = carrito.reduce(
-    (total, item) => total + item.cantidad,
-    0
-  );
+  const cantidadTotal = calcularCantidadTotal(carrito);
 
-  // Calcular precio total
-  const totalCarrito = carrito.reduce(
-    (total, item) =>
-      total + item.precio * item.cantidad,
-    0
-  );
+  const totalCarrito = calcularTotalCarrito(carrito);
 
   return (
     <CarritoContext.Provider

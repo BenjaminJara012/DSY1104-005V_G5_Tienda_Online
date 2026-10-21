@@ -1,9 +1,24 @@
 
 import { Link } from "react-router-dom";
 import { useCarrito } from "../context/CarritoContext";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
   const { cantidadTotal } = useCarrito();
+  const [busqueda, setBusqueda] = useState("");
+  const navigate = useNavigate();
+
+  const manejarBusqueda = (e) => {
+    e.preventDefault();
+
+  const texto = busqueda.trim();
+
+    if (!texto) return;
+
+    navigate(`/buscar?q=${encodeURIComponent(texto)}`);
+    setBusqueda("");
+};
   return (
     <header className="header-principal">
       <div className="header-top">
@@ -16,17 +31,19 @@ function Navbar() {
           </span>
         </Link>
 
-        {/* Barra de búsqueda */}
-        <div className="search-bar">
+        <form className="search-bar" onSubmit={manejarBusqueda}>
           <input
             type="text"
             placeholder="Busca por Título, Autor, ISBN..."
             aria-label="Buscar libros"
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
           />
-          <button type="button" aria-label="Buscar">
+
+          <button type="submit" aria-label="Buscar">
             🔍
           </button>
-        </div>
+        </form>
 
         {/* Autenticación y carrito */}
         <div className="header-actions">
@@ -56,7 +73,7 @@ function Navbar() {
           <li><Link to="/categorias/infantil">INFANTIL Y JUVENIL</Link></li>
           <li>
             <Link to="/ofertas" className="highlight-pink">
-              AUTORES CHILENOS HASTA 45% OFF
+              LIBROS CON DESCUENTO%
             </Link>
           </li>
         </ul>

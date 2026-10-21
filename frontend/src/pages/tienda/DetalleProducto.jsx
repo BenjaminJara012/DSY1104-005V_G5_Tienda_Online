@@ -2,6 +2,7 @@
 import { Link, useParams } from "react-router-dom";
 import { obtenerProductos } from "../../services/productosService";
 import { useCarrito } from "../../context/CarritoContext";
+import { calcularPrecioFinal } from "../../services/productosService";
 
 function DetalleProducto() {
   // Obtiene el ID del producto desde la URL
@@ -29,8 +30,14 @@ function DetalleProducto() {
     );
   }
 
+  const precioFinal = calcularPrecioFinal(producto);
+
   const precioFormateado =
-    producto.precio.toLocaleString("es-CL");
+    precioFinal.toLocaleString("es-CL");
+
+  const tieneOferta =
+    producto.oferta === true &&
+    Number(producto.descuento) > 0;
 
   return (
     <main className="container py-5">
@@ -52,6 +59,19 @@ function DetalleProducto() {
         {/* Información del libro */}
         <div className="col-md-7">
           <h1 className="mb-3">{producto.titulo}</h1>
+
+          {/* Descuento y precio original */}
+          {tieneOferta && (
+            <div className="mb-2">
+              <span className="badge bg-danger me-2">
+                {producto.descuento}% OFF
+              </span>
+
+              <span className="text-muted text-decoration-line-through">
+                ${producto.precio.toLocaleString("es-CL")}
+              </span>
+            </div>
+          )}
 
           <h3 className="text-danger mb-4">
             ${precioFormateado}

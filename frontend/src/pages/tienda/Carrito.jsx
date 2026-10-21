@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCarrito } from "../../context/CarritoContext";
 
@@ -11,8 +12,71 @@ function Carrito() {
     totalCarrito
   } = useCarrito();
 
+  // Guarda temporalmente el texto mientras se edita.
+  const [cantidadesEditadas, setCantidadesEditadas] =
+    useState({});
+
   const formatearPrecio = (precio) =>
     precio.toLocaleString("es-CL");
+
+  const obtenerCantidadMostrada = (producto) => {
+    return Object.prototype.hasOwnProperty.call(
+      cantidadesEditadas,
+      producto.id
+    )
+      ? cantidadesEditadas[producto.id]
+      : String(producto.cantidad);
+  };
+
+  const editarCantidad = (id, valor) => {
+    // Permitir borrar el contenido temporalmente.
+    if (valor === "") {
+      setCantidadesEditadas((actual) => ({
+        ...actual,
+        [id]: ""
+      }));
+      return;
+    }
+
+    // Solo permitir dígitos.
+    if (!/^\d+$/.test(valor)) {
+      return;
+    }
+
+    setCantidadesEditadas((actual) => ({
+      ...actual,
+      [id]: valor
+    }));
+
+    const cantidad = Number(valor);
+
+    if (Number.isSafeInteger(cantidad) && cantidad >= 1) {
+      cambiarCantidad(id, cantidad);
+    }
+  };
+
+  const finalizarEdicion = (producto) => {
+    setCantidadesEditadas((actual) => {
+      const nuevas = { ...actual };
+      delete nuevas[producto.id];
+      return nuevas;
+    });
+  };
+
+  const ajustarCantidad = (producto, diferencia) => {
+    const nuevaCantidad = Math.max(
+      1,
+      producto.cantidad + diferencia
+    );
+
+    cambiarCantidad(producto.id, nuevaCantidad);
+
+    setCantidadesEditadas((actual) => {
+      const nuevas = { ...actual };
+      delete nuevas[producto.id];
+      return nuevas;
+    });
+  };
 
   return (
     <main className="container py-5">
@@ -55,6 +119,7 @@ function Carrito() {
                             objectFit: "contain"
                           }}
                         />
+
                         <span>{producto.titulo}</span>
                       </div>
                     </td>
@@ -64,20 +129,51 @@ function Carrito() {
                     </td>
 
                     <td>
-                      <input
-                        type="number"
-                        min="1"
-                        step="1"
-                        className="form-control"
-                        style={{ width: "85px" }}
-                        value={producto.cantidad}
-                        onChange={(e) =>
-                          cambiarCantidad(
-                            producto.id,
-                            e.target.value
-                          )
-                        }
-                      />
+                      <div
+                        className="d-flex align-items-center gap-1"
+                        style={{ minWidth: "155px" }}
+                      >
+                        <button
+                          type="button"
+                          className="btn btn-outline-secondary btn-sm"
+                          onClick={() =>
+                            ajustarCantidad(producto, -1)
+                          }
+                          disabled={producto.cantidad <= 1}
+                          aria-label={`Disminuir cantidad de ${producto.titulo}`}
+                        >
+                          −
+                        </button>
+
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          className="form-control form-control-sm text-center"
+                          style={{ width: "65px" }}
+                          aria-label={`Cantidad de ${producto.titulo}`}
+                          value={obtenerCantidadMostrada(producto)}
+                          onChange={(e) =>
+                            editarCantidad(
+                              producto.id,
+                              e.target.value
+                            )
+                          }
+                          onBlur={() =>
+                            finalizarEdicion(producto)
+                          }
+                        />
+
+                        <button
+                          type="button"
+                          className="btn btn-outline-secondary btn-sm"
+                          onClick={() =>
+                            ajustarCantidad(producto, 1)
+                          }
+                          aria-label={`Aumentar cantidad de ${producto.titulo}`}
+                        >
+                          +
+                        </button>
+                      </div>
                     </td>
 
                     <td>
@@ -117,7 +213,10 @@ function Carrito() {
                 Total: ${formatearPrecio(totalCarrito)}
               </h3>
 
-              <Link to="/checkout" className="btn btn-success mt-2">
+              <Link
+                to="/checkout"
+                className="btn btn-success mt-2"
+              >
                 Continuar al pago
               </Link>
             </div>
