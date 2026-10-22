@@ -8,6 +8,11 @@ import {
   calcularTotalCarrito
 } from "../src/services/carritoService.js";
 
+import {
+  calcularPrecioFinal,
+  obtenerProductos
+} from "../src/services/productosService.js";
+
 describe("Carrito de compras", () => {
 
   const producto = {
@@ -19,11 +24,17 @@ describe("Carrito de compras", () => {
   };
 
   it("debe agregar un producto al carrito", () => {
+    const productoCatalogo = obtenerProductos().find(
+      (item) => item.id === producto.id
+    );
+
+    const precioEsperado = calcularPrecioFinal(productoCatalogo);
+
     const carrito = agregarProducto([], producto);
 
     expect(carrito.length).toBe(1);
     expect(carrito[0].cantidad).toBe(1);
-    expect(carrito[0].precio).toBe(15000);
+    expect(carrito[0].precio).toBe(precioEsperado);
   });
 
   it("debe aumentar la cantidad de un producto existente", () => {
@@ -52,14 +63,20 @@ describe("Carrito de compras", () => {
   });
 
   it("debe calcular el total con descuento", () => {
+    const productoCatalogo = obtenerProductos().find(
+      (item) => item.id === producto.id
+    );
+
+    const precioEsperado = calcularPrecioFinal(productoCatalogo);
+
     let carrito = agregarProducto([], producto);
 
-    carrito = modificarCantidad(carrito, 1, 2);
+    carrito = modificarCantidad(carrito, producto.id, 2);
 
     const total = calcularTotalCarrito(carrito);
     const cantidad = calcularCantidadTotal(carrito);
 
-    expect(total).toBe(30000);
+    expect(total).toBe(precioEsperado * 2);
     expect(cantidad).toBe(2);
   });
 

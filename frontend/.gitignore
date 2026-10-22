@@ -30,3 +30,9 @@ frontend/tests/.karma/
 
 node_modules/
 /node_modules/
+
+# Reportes de cobertura
+/coverage/
+
+# Archivos temporales generados por Karma
+/tests/.karma/
