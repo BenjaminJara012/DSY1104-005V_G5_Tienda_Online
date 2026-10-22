@@ -1,17 +1,49 @@
 
-import { calcularPrecioFinal } from "./productosService";
+import {
+  calcularPrecioFinal,
+  obtenerProductos
+} from "./productosService";
+
+// Consultar el stock actualizado del catálogo
+export function obtenerStockDisponible(id) {
+  const producto = obtenerProductos().find(
+    (item) => item.id === id
+  );
+
+  if (!producto) return 0;
+
+  const stock = Number(producto.stock);
+
+  return Number.isInteger(stock) && stock >= 0
+    ? stock
+    : 0;
+}
 
 // Agregar un producto al carrito
 export function agregarProducto(carrito, producto) {
-  const productoConPrecioFinal = {
-    ...producto,
-    precioOriginal: producto.precio,
-    precio: calcularPrecioFinal(producto)
-  };
+  const productoActual = obtenerProductos().find(
+    (item) => item.id === producto.id
+  );
+
+  if (!productoActual) return carrito;
+
+  const stockDisponible = obtenerStockDisponible(producto.id);
 
   const existe = carrito.find(
     (item) => item.id === producto.id
   );
+
+  const cantidadActual = existe ? existe.cantidad : 0;
+
+  if (cantidadActual >= stockDisponible) {
+    return carrito;
+  }
+
+  const productoConPrecioFinal = {
+    ...productoActual,
+    precioOriginal: productoActual.precio,
+    precio: calcularPrecioFinal(productoActual)
+  };
 
   if (existe) {
     return carrito.map((item) =>
@@ -30,12 +62,12 @@ export function agregarProducto(carrito, producto) {
   ];
 }
 
-// Eliminar un producto
+// Eliminar un producto del carrito
 export function eliminarProducto(carrito, id) {
   return carrito.filter((item) => item.id !== id);
 }
 
-// Modificar cantidad
+// Modificar cantidad respetando el stock
 export function modificarCantidad(carrito, id, cantidad) {
   const nuevaCantidad = Number(cantidad);
 
@@ -43,6 +75,12 @@ export function modificarCantidad(carrito, id, cantidad) {
     !Number.isInteger(nuevaCantidad) ||
     nuevaCantidad < 1
   ) {
+    return carrito;
+  }
+
+  const stockDisponible = obtenerStockDisponible(id);
+
+  if (nuevaCantidad > stockDisponible) {
     return carrito;
   }
 

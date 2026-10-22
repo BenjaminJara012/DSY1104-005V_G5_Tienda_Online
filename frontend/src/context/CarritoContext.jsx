@@ -12,7 +12,8 @@ import {
   modificarCantidad,
   vaciarProductos,
   calcularCantidadTotal,
-  calcularTotalCarrito
+  calcularTotalCarrito,
+  obtenerStockDisponible
 } from "../services/carritoService";
 
 const CarritoContext = createContext(null);
@@ -29,7 +30,9 @@ export function CarritoProvider({ children }) {
     }
   });
 
-  // Persistir el carrito
+  const [mensajeStock, setMensajeStock] = useState("");
+
+  // Persistir carrito
   useEffect(() => {
     localStorage.setItem(
       "carritoLibreria",
@@ -37,11 +40,34 @@ export function CarritoProvider({ children }) {
     );
   }, [carrito]);
 
-  // Agregar producto
+  // Agregar producto con validación
   const agregarAlCarrito = (producto) => {
+    const stockDisponible = obtenerStockDisponible(producto.id);
+
+    const productoExistente = carrito.find(
+      (item) => item.id === producto.id
+    );
+
+    const cantidadActual = productoExistente
+      ? productoExistente.cantidad
+      : 0;
+
+    if (cantidadActual >= stockDisponible) {
+      setMensajeStock(
+        stockDisponible === 0
+          ? `El libro "${producto.titulo}" está agotado.`
+          : `Solo hay ${stockDisponible} unidades disponibles de "${producto.titulo}".`
+      );
+
+      return false;
+    }
+
     setCarrito((anterior) =>
       agregarProducto(anterior, producto)
     );
+
+    setMensajeStock("");
+    return true;
   };
 
   // Eliminar producto
@@ -49,22 +75,41 @@ export function CarritoProvider({ children }) {
     setCarrito((anterior) =>
       eliminarProducto(anterior, id)
     );
+
+    setMensajeStock("");
   };
 
-  // Cambiar cantidad
+  // Cambiar cantidad con validación
   const cambiarCantidad = (id, cantidad) => {
+    const stockDisponible = obtenerStockDisponible(id);
+    const nuevaCantidad = Number(cantidad);
+
+    if (
+      Number.isInteger(nuevaCantidad) &&
+      nuevaCantidad > stockDisponible
+    ) {
+      setMensajeStock(
+        `No puedes superar el stock disponible (${stockDisponible} unidades).`
+      );
+
+      return false;
+    }
+
     setCarrito((anterior) =>
       modificarCantidad(anterior, id, cantidad)
     );
+
+    setMensajeStock("");
+    return true;
   };
 
   // Vaciar carrito
   const vaciarCarrito = () => {
     setCarrito(vaciarProductos());
+    setMensajeStock("");
   };
 
   const cantidadTotal = calcularCantidadTotal(carrito);
-
   const totalCarrito = calcularTotalCarrito(carrito);
 
   return (
@@ -76,7 +121,9 @@ export function CarritoProvider({ children }) {
         cambiarCantidad,
         vaciarCarrito,
         cantidadTotal,
-        totalCarrito
+        totalCarrito,
+        mensajeStock,
+        limpiarMensajeStock: () => setMensajeStock("")
       }}
     >
       {children}

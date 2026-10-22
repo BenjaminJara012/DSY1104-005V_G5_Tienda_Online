@@ -1,13 +1,29 @@
 
 import { Link } from "react-router-dom";
-import { calcularPrecioFinal } from "../services/productosService";
+import { useCarrito } from "../context/CarritoContext";
+import {
+  calcularPrecioFinal
+} from "../services/productosService";
 
 function ProductoCard({ producto, onAgregar }) {
+  const { carrito, mensajeStock } = useCarrito();
+
   const precioFinal = calcularPrecioFinal(producto);
 
   const tieneOferta =
     producto.oferta === true &&
     Number(producto.descuento) > 0;
+
+  const stockDisponible = Number(producto.stock ?? 10);
+
+  const cantidadEnCarrito =
+    carrito.find((item) => item.id === producto.id)
+      ?.cantidad ?? 0;
+
+  const agotado = stockDisponible <= 0;
+
+  const limiteAlcanzado =
+    cantidadEnCarrito >= stockDisponible;
 
   const formatearPrecio = (precio) =>
     precio.toLocaleString("es-CL");
@@ -53,6 +69,12 @@ function ProductoCard({ producto, onAgregar }) {
         </p>
       </div>
 
+      <p className="small text-muted mb-2">
+        {agotado
+          ? "Producto agotado"
+          : `Stock disponible: ${stockDisponible}`}
+      </p>
+
       <div className="card-buttons">
         <Link
           to={`/producto/${producto.id}`}
@@ -65,10 +87,28 @@ function ProductoCard({ producto, onAgregar }) {
           type="button"
           className="btn-add-cart"
           onClick={() => onAgregar(producto)}
+          disabled={agotado}
         >
-          Agregar
+          {agotado ? "Agotado" : "Agregar"}
         </button>
       </div>
+
+      {limiteAlcanzado && !agotado && (
+        <small className="text-warning d-block mt-2">
+          Ya tienes todas las unidades disponibles
+          en tu carrito.
+        </small>
+      )}
+
+      {mensajeStock &&
+        mensajeStock.includes(`"${producto.titulo}"`) && (
+          <div
+            className="alert alert-warning mt-2 py-2"
+            role="alert"
+          >
+            {mensajeStock}
+          </div>
+        )}
     </article>
   );
 }

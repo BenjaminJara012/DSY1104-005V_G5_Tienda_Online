@@ -1,7 +1,11 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
+
 import { useCarrito } from "../../context/CarritoContext";
+import {
+  obtenerStockDisponible
+} from "../../services/carritoService";
 
 function Carrito() {
   const {
@@ -9,10 +13,11 @@ function Carrito() {
     eliminarDelCarrito,
     cambiarCantidad,
     vaciarCarrito,
-    totalCarrito
+    totalCarrito,
+    mensajeStock,
+    limpiarMensajeStock
   } = useCarrito();
 
-  // Guarda temporalmente el texto mientras se edita.
   const [cantidadesEditadas, setCantidadesEditadas] =
     useState({});
 
@@ -28,8 +33,15 @@ function Carrito() {
       : String(producto.cantidad);
   };
 
+  const limpiarEdicion = (id) => {
+    setCantidadesEditadas((actual) => {
+      const nuevas = { ...actual };
+      delete nuevas[id];
+      return nuevas;
+    });
+  };
+
   const editarCantidad = (id, valor) => {
-    // Permitir borrar el contenido temporalmente.
     if (valor === "") {
       setCantidadesEditadas((actual) => ({
         ...actual,
@@ -38,8 +50,13 @@ function Carrito() {
       return;
     }
 
-    // Solo permitir dígitos.
     if (!/^\d+$/.test(valor)) {
+      return;
+    }
+
+    const cantidad = Number(valor);
+
+    if (!Number.isSafeInteger(cantidad)) {
       return;
     }
 
@@ -48,19 +65,28 @@ function Carrito() {
       [id]: valor
     }));
 
-    const cantidad = Number(valor);
+    if (cantidad >= 1) {
+      const aceptado = cambiarCantidad(id, cantidad);
 
-    if (Number.isSafeInteger(cantidad) && cantidad >= 1) {
-      cambiarCantidad(id, cantidad);
+      if (!aceptado) {
+        limpiarEdicion(id);
+      }
     }
   };
 
   const finalizarEdicion = (producto) => {
-    setCantidadesEditadas((actual) => {
-      const nuevas = { ...actual };
-      delete nuevas[producto.id];
-      return nuevas;
-    });
+    const valor = obtenerCantidadMostrada(producto);
+    const cantidad = Number(valor);
+
+    if (
+      valor !== "" &&
+      Number.isSafeInteger(cantidad) &&
+      cantidad >= 1
+    ) {
+      cambiarCantidad(producto.id, cantidad);
+    }
+
+    limpiarEdicion(producto.id);
   };
 
   const ajustarCantidad = (producto, diferencia) => {
@@ -70,17 +96,33 @@ function Carrito() {
     );
 
     cambiarCantidad(producto.id, nuevaCantidad);
+    limpiarEdicion(producto.id);
+  };
 
-    setCantidadesEditadas((actual) => {
-      const nuevas = { ...actual };
-      delete nuevas[producto.id];
-      return nuevas;
-    });
+  const eliminarProducto = (id) => {
+    eliminarDelCarrito(id);
+    limpiarEdicion(id);
   };
 
   return (
     <main className="container py-5">
       <h1 className="mb-4">Mi carrito de compras</h1>
+
+      {mensajeStock && (
+        <div
+          className="alert alert-warning alert-dismissible"
+          role="alert"
+        >
+          {mensajeStock}
+
+          <button
+            type="button"
+            className="btn-close"
+            aria-label="Cerrar mensaje"
+            onClick={limpiarMensajeStock}
+          />
+        </div>
+      )}
 
       {carrito.length === 0 ? (
         <div className="text-center py-5">
@@ -100,101 +142,120 @@ function Carrito() {
                   <th>Producto</th>
                   <th>Precio</th>
                   <th>Cantidad</th>
+                  <th>Stock</th>
                   <th>Subtotal</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
 
               <tbody>
-                {carrito.map((producto) => (
-                  <tr key={producto.id}>
-                    <td>
-                      <div className="d-flex align-items-center gap-3">
-                        <img
-                          src={producto.imagen}
-                          alt={producto.titulo}
-                          style={{
-                            width: "65px",
-                            height: "90px",
-                            objectFit: "contain"
-                          }}
-                        />
+                {carrito.map((producto) => {
+                  const stockDisponible =
+                    obtenerStockDisponible(producto.id);
 
-                        <span>{producto.titulo}</span>
-                      </div>
-                    </td>
+                  const limiteAlcanzado =
+                    producto.cantidad >= stockDisponible;
 
-                    <td>
-                      ${formatearPrecio(producto.precio)}
-                    </td>
+                  return (
+                    <tr key={producto.id}>
+                      <td>
+                        <div className="d-flex align-items-center gap-3">
+                          <img
+                            src={producto.imagen}
+                            alt={producto.titulo}
+                            style={{
+                              width: "65px",
+                              height: "90px",
+                              objectFit: "contain"
+                            }}
+                          />
 
-                    <td>
-                      <div
-                        className="d-flex align-items-center gap-1"
-                        style={{ minWidth: "155px" }}
-                      >
+                          <span>{producto.titulo}</span>
+                        </div>
+                      </td>
+
+                      <td>
+                        ${formatearPrecio(producto.precio)}
+                      </td>
+
+                      <td>
+                        <div
+                          className="d-flex align-items-center gap-1"
+                          style={{ minWidth: "155px" }}
+                        >
+                          <button
+                            type="button"
+                            className="btn btn-outline-secondary btn-sm"
+                            onClick={() =>
+                              ajustarCantidad(producto, -1)
+                            }
+                            disabled={producto.cantidad <= 1}
+                            aria-label={`Disminuir cantidad de ${producto.titulo}`}
+                          >
+                            −
+                          </button>
+
+                          <input
+                            type="text"
+                            inputMode="numeric"
+                            className="form-control form-control-sm text-center"
+                            style={{ width: "65px" }}
+                            aria-label={`Cantidad de ${producto.titulo}`}
+                            value={obtenerCantidadMostrada(producto)}
+                            onChange={(e) =>
+                              editarCantidad(
+                                producto.id,
+                                e.target.value
+                              )
+                            }
+                            onBlur={() =>
+                              finalizarEdicion(producto)
+                            }
+                          />
+
+                          <button
+                            type="button"
+                            className="btn btn-outline-secondary btn-sm"
+                            onClick={() =>
+                              ajustarCantidad(producto, 1)
+                            }
+                            disabled={limiteAlcanzado}
+                            aria-label={`Aumentar cantidad de ${producto.titulo}`}
+                          >
+                            +
+                          </button>
+                        </div>
+                      </td>
+
+                      <td>
+                        {stockDisponible}
+                        {producto.cantidad > stockDisponible && (
+                          <small className="text-danger d-block">
+                            Stock insuficiente
+                          </small>
+                        )}
+                      </td>
+
+                      <td>
+                        ${formatearPrecio(
+                          producto.precio * producto.cantidad
+                        )}
+                      </td>
+
+                      <td>
                         <button
                           type="button"
-                          className="btn btn-outline-secondary btn-sm"
+                          className="btn btn-outline-danger btn-sm"
                           onClick={() =>
-                            ajustarCantidad(producto, -1)
+                            eliminarProducto(producto.id)
                           }
-                          disabled={producto.cantidad <= 1}
-                          aria-label={`Disminuir cantidad de ${producto.titulo}`}
                         >
-                          −
+                          Eliminar
                         </button>
-
-                        <input
-                          type="text"
-                          inputMode="numeric"
-                          className="form-control form-control-sm text-center"
-                          style={{ width: "65px" }}
-                          aria-label={`Cantidad de ${producto.titulo}`}
-                          value={obtenerCantidadMostrada(producto)}
-                          onChange={(e) =>
-                            editarCantidad(
-                              producto.id,
-                              e.target.value
-                            )
-                          }
-                          onBlur={() =>
-                            finalizarEdicion(producto)
-                          }
-                        />
-
-                        <button
-                          type="button"
-                          className="btn btn-outline-secondary btn-sm"
-                          onClick={() =>
-                            ajustarCantidad(producto, 1)
-                          }
-                          aria-label={`Aumentar cantidad de ${producto.titulo}`}
-                        >
-                          +
-                        </button>
-                      </div>
-                    </td>
-
-                    <td>
-                      ${formatearPrecio(
-                        producto.precio * producto.cantidad
-                      )}
-                    </td>
-
-                    <td>
-                      <button
-                        type="button"
-                        className="btn btn-outline-danger btn-sm"
-                        onClick={() =>
-                          eliminarDelCarrito(producto.id)
-                        }
-                      >
-                        Eliminar
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -203,7 +264,10 @@ function Carrito() {
             <button
               type="button"
               className="btn btn-outline-danger"
-              onClick={vaciarCarrito}
+              onClick={() => {
+                vaciarCarrito();
+                setCantidadesEditadas({});
+              }}
             >
               Vaciar carrito
             </button>

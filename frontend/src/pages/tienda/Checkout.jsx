@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
 import { useCarrito } from "../../context/CarritoContext";
-import { guardarOrden } from "../../services/ordenesService";
+import { confirmarCompra } from "../../services/ordenesService";
 import { validarCheckout } from "../../services/checkoutService";
 
 function Checkout() {
@@ -100,18 +100,22 @@ function Checkout() {
     };
 
     try {
-      guardarOrden(orden);
+      const ordenGuardada = confirmarCompra(orden, carrito);
+
       vaciarCarrito();
 
-      navigate(`/pago-exitoso/${orden.id}`, {
+      navigate(`/pago-exitoso/${ordenGuardada.id}`, {
         replace: true
       });
     } catch (error) {
-      console.error("Error al guardar la orden:", error);
+      console.error("Error al confirmar la compra:", error);
+
       setErrores({
         general:
-          "No se pudo guardar la compra. Inténtalo nuevamente."
+          error.message ||
+          "No se pudo completar la compra. Inténtalo nuevamente."
       });
+
       setProcesando(false);
     }
   };

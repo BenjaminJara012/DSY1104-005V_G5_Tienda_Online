@@ -8,7 +8,8 @@ const productosIniciales = [
     descripcion: "Novela de fantasía y aventuras escrita por J. K. Rowling que narra los inicios de un niño huérfano en el mundo de la magia.",
     categoria: 'Fantasía',
     oferta: true,
-    descuento: 15
+    descuento: 15,
+    stock: 10
   },
   {
     id: 2,
@@ -18,7 +19,8 @@ const productosIniciales = [
     descripcion: "Segunda parte de la historia de Harry Potter escrito por J. K. Rowling.",
     categoria: 'Fantasía',
     oferta: false,
-    descuento: 0
+    descuento: 0,
+    stock: 10
   },
   {
     id: 3,
@@ -28,7 +30,8 @@ const productosIniciales = [
     descripcion: "Tercera entrega de la saga creada por J. K. Rowling, donde Harry cumple 13 años y enfrenta el regreso a Hogwarts en medio de una gran amenaza.",
     categoria: 'Fantasía',
     oferta: true,
-    descuento: 10
+    descuento: 10,
+    stock: 10
   },
   {
     id: 4,
@@ -38,7 +41,8 @@ const productosIniciales = [
     descripcion: "Historia ambientada en la época de la Regencia en Londres y combina romance, humor y los enredos de la alta sociedad.",
     categoria: 'Romance',
     oferta: false,
-    descuento: 0
+    descuento: 0,
+    stock: 10
   },
   {
     id: 5,
@@ -48,7 +52,8 @@ const productosIniciales = [
     descripcion: "Segundo libro de la exitosa serie romántica histórica Los Bridgerton, escrita por Julia Quinn, donde Anthony Bridgerton decide buscar una esposa para cumplir con sus deberes nobiliarios.",
     categoria: 'Romance',
     oferta: true,
-    descuento: 20
+    descuento: 20,
+    stock: 10
   },
   {
     id: 6,
@@ -58,7 +63,8 @@ const productosIniciales = [
     descripcion: "Es el tercer libro de la famosa saga Los Bridgerton, y cuenta una romántica historia inspirada en el cuento de la Cenicienta.",
     categoria: 'Romance',
     oferta: false,
-    descuento: 0
+    descuento: 0,
+    stock: 10
   },
   {
     id: 7,
@@ -68,7 +74,8 @@ const productosIniciales = [
     descripcion: "Novela de terror psicológico escrita por Stephen King.",
     categoria: 'Terror',
     oferta: true,
-    descuento: 15
+    descuento: 15,
+    stock: 10
   },
   {
     id: 8,
@@ -78,7 +85,8 @@ const productosIniciales = [
     descripcion: "Novela de terror y horror sobrenatural escrita por Stephen King.",
     categoria: 'Terror',
     oferta: false,
-    descuento: 0
+    descuento: 0,
+    stock: 10
   },
   {
     id: 9,
@@ -88,7 +96,8 @@ const productosIniciales = [
     descripcion: "Un clásico del género de terror escrito por Stephen King, que narra la adolescencia de una joven marginada con poderes telequinéticos.",
     categoria: 'Terror',
     oferta: true,
-    descuento: 10
+    descuento: 10,
+    stock: 10
   },
   {
     id: 10,
@@ -98,7 +107,8 @@ const productosIniciales = [
     descripcion: "Cuarto libro de la exitosa serie romántica Bridgerton escrita por Julia Quinn.",
     categoria: 'Romance',
     oferta: false,
-    descuento: 0
+    descuento: 0,
+    stock: 10
   }
 ];
 
@@ -120,6 +130,7 @@ export function obtenerProductos() {
             categoria: inicial?.categoria ?? "",
             oferta: inicial?.oferta ?? false,
             descuento: inicial?.descuento ?? 0,
+            stock: inicial?.stock ?? 10,
             ...producto
           };
         });
@@ -182,3 +193,11 @@ export function calcularPrecioFinal(producto) {
   );
 }
 
+
+//ADMIN
+export function guardarProductos(productos) {
+  localStorage.setItem(
+    'productosLibreria',
+    JSON.stringify(productos)
+  );
+}
